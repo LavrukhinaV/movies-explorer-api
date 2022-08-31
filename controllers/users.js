@@ -3,6 +3,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const ValidationError = require('../errors/validation-err');
 const ConflictError = require('../errors/conflict-error');
+const { validationErr, emailIsUsedErr, userNotFoundErr } = require('../utils/errorMessages');
 
 const { getJwtToken } = require('../utils/auth');
 
@@ -10,7 +11,7 @@ module.exports.getInfo = (req, res, next) => {
   User.findById(req.user.id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Запрашиваемый пользователь не найден');
+        throw new NotFoundError(userNotFoundErr);
       }
       res.send({
         name: user.name,
@@ -19,7 +20,7 @@ module.exports.getInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new ValidationError('Переданы некорректные данные');
+        throw new ValidationError(validationErr);
       }
       next(err);
     })
@@ -32,7 +33,7 @@ module.exports.updateUserInfo = (req, res, next) => {
   User.findByIdAndUpdate(req.user.id, { email, name }, { new: true, runValidators: true })
     .then((data) => {
       if (!data) {
-        throw new NotFoundError('Запрашиваемый пользователь не найден');
+        throw new NotFoundError(userNotFoundErr);
       }
       res.send({
         name: data.name,
@@ -41,7 +42,7 @@ module.exports.updateUserInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Переданы некорректные данные');
+        throw new ValidationError(validationErr);
       }
       next(err);
     })
@@ -71,9 +72,9 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные'));
+        next(new ValidationError(validationErr));
       } else if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
+        next(new ConflictError(emailIsUsedErr));
       } else {
         next(err);
       }
