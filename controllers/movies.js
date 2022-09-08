@@ -14,18 +14,7 @@ module.exports.getMovies = (req, res, next) => {
 
 module.exports.createMovies = (req, res, next) => {
   Movie.create({
-    country: req.body.country,
-    director: req.body.director,
-    duration: req.body.duration,
-    year: req.body.year,
-    description: req.body.description,
-    image: req.body.image,
-    trailerLink: req.body.trailerLink,
-    owner: req.user.id,
-    movieId: req.body.movieId,
-    nameRU: req.body.nameRU,
-    nameEN: req.body.nameEN,
-    thumbnail: req.body.thumbnail,
+    owner: req.user.id, ...req.body,
   })
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {

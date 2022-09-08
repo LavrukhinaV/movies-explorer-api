@@ -8,6 +8,8 @@ const serverErr = 'На сервере произошла ошибка';
 const limiterErr = 'Вы превысили лимит в 1000 запросов в час';
 const dataErr = 'Неправильные почта или пароль';
 const notFoundErr = 'Неправильный адрес';
+const emailNotValid = 'Email невалидный';
+const urlNotValid = 'URL невалидный';
 
 module.exports = {
   validationErr,
@@ -20,4 +22,6 @@ module.exports = {
   limiterErr,
   dataErr,
   notFoundErr,
+  emailNotValid,
+  urlNotValid,
 };

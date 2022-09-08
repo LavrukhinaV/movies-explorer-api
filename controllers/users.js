@@ -18,12 +18,6 @@ module.exports.getInfo = (req, res, next) => {
         email: user.email,
       });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new ValidationError(validationErr);
-      }
-      next(err);
-    })
     .catch(next);
 };
 
@@ -43,8 +37,11 @@ module.exports.updateUserInfo = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(validationErr);
+      } else if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
+      } else {
+        next(err);
       }
-      next(err);
     })
     .catch(next);
 };

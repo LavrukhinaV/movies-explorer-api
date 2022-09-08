@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { urlNotValid } = require('../utils/errorMessages');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -28,7 +29,7 @@ const movieSchema = new mongoose.Schema({
       validator(v) {
         return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/.test(v);
       },
-      message: 'URL невалидный',
+      message: urlNotValid,
     },
   },
   trailerLink: {
@@ -38,7 +39,7 @@ const movieSchema = new mongoose.Schema({
       validator(v) {
         return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/.test(v);
       },
-      message: 'URL невалидный',
+      message: urlNotValid,
     },
   },
   thumbnail: {
@@ -48,7 +49,7 @@ const movieSchema = new mongoose.Schema({
       validator(v) {
         return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/.test(v);
       },
-      message: 'URL невалидный',
+      message: urlNotValid,
     },
   },
   owner: {
@@ -58,7 +59,7 @@ const movieSchema = new mongoose.Schema({
   },
   movieId: {
     required: true,
-    type: Number,
+    type: String,
   },
   nameRU: {
     required: true,
