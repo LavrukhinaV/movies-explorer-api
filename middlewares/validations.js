@@ -1,16 +1,28 @@
 const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
+const { urlNotValid, emailNotValid } = require('../utils/errorMessages');
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().min(3).required().email(),
+    email: Joi.string().min(3).required().custom((value, helpers) => {
+      if (validator.isEmail(value)) {
+        return value;
+      }
+      return helpers.message(emailNotValid);
+    }),
     password: Joi.string().required(),
   }),
 });
 
 const validateLogin = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().min(3).required().email(),
+    email: Joi.string().min(3).required().custom((value, helpers) => {
+      if (validator.isEmail(value)) {
+        return value;
+      }
+      return helpers.message(emailNotValid);
+    }),
     password: Joi.string().required(),
   }),
 });
@@ -18,7 +30,12 @@ const validateLogin = celebrate({
 const validateUpdateUserInfo = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    email: Joi.string().min(3).required().email(),
+    email: Joi.string().min(3).required().custom((value, helpers) => {
+      if (validator.isEmail(value)) {
+        return value;
+      }
+      return helpers.message(emailNotValid);
+    }),
   }),
 });
 
@@ -29,11 +46,25 @@ const validateCreateMovie = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().pattern(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/).required(),
-    trailerLink: Joi.string().pattern(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/).required(),
-    thumbnail: Joi.string().pattern(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/).required(),
-    owner: Joi.string().pattern(/[0-9a-fA-F]{24}$/),
-    movieId: Joi.string().pattern(/[0-9a-fA-F]{24}$/),
+    image: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message(urlNotValid);
+    }),
+    trailerLink: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message(urlNotValid);
+    }),
+    thumbnail: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message(urlNotValid);
+    }),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
   }),

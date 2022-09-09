@@ -11,7 +11,7 @@ module.exports.getInfo = (req, res, next) => {
   User.findById(req.user.id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError(userNotFoundErr);
+        next(new NotFoundError(userNotFoundErr));
       }
       res.send({
         name: user.name,
@@ -27,7 +27,7 @@ module.exports.updateUserInfo = (req, res, next) => {
   User.findByIdAndUpdate(req.user.id, { email, name }, { new: true, runValidators: true })
     .then((data) => {
       if (!data) {
-        throw new NotFoundError(userNotFoundErr);
+        next(new NotFoundError(userNotFoundErr));
       }
       res.send({
         name: data.name,
@@ -36,14 +36,13 @@ module.exports.updateUserInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError(validationErr);
+        next(new ValidationError(validationErr));
       } else if (err.code === 11000) {
         next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       } else {
         next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 module.exports.login = (req, res, next) => {
@@ -75,6 +74,5 @@ module.exports.createUser = (req, res, next) => {
       } else {
         next(err);
       }
-    })
-    .catch(next);
+    });
 };

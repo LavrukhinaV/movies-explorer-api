@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-const devDatabaseUrl = require('./utils/constants');
+const { devDatabaseUrl } = require('./utils/constants');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
@@ -30,9 +30,7 @@ mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : devDatabaseUrl, {
 require('./routes/index')(app);
 
 app.use(errorLogger);
-
 app.use(errors());
-
 app.use(errorHandler);
 
 app.listen(PORT, () => {

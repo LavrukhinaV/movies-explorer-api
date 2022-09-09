@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 const { urlNotValid } = require('../utils/errorMessages');
 
 const movieSchema = new mongoose.Schema({
@@ -26,9 +27,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     type: String,
     validate: {
-      validator(v) {
-        return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/.test(v);
-      },
+      validator: validator.isURL,
       message: urlNotValid,
     },
   },
@@ -36,9 +35,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     type: String,
     validate: {
-      validator(v) {
-        return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/.test(v);
-      },
+      validator: validator.isURL,
       message: urlNotValid,
     },
   },
@@ -46,9 +43,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     type: String,
     validate: {
-      validator(v) {
-        return /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._[\]+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_[\]+.~#?&//=]*)/.test(v);
-      },
+      validator: validator.isURL,
       message: urlNotValid,
     },
   },
@@ -59,7 +54,7 @@ const movieSchema = new mongoose.Schema({
   },
   movieId: {
     required: true,
-    type: String,
+    type: Number,
   },
   nameRU: {
     required: true,

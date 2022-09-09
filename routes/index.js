@@ -10,9 +10,10 @@ module.exports = (app) => {
   app.post('/signin', validateLogin, login);
   app.post('/signup', validateCreateUser, createUser);
 
-  app.use('/users', auth, usersRoutes);
-  app.use('/movies', auth, moviesRoutes);
+  app.use('/users', usersRoutes);
+  app.use('/movies', moviesRoutes);
 
+  app.use(auth);
   app.use('*', (req, res, next) => {
     next(new NotFoundError(notFoundErr));
   });

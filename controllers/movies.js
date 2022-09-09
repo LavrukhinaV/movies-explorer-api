@@ -19,11 +19,11 @@ module.exports.createMovies = (req, res, next) => {
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError(validationErr);
+        next(new ValidationError(validationErr));
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
 
 module.exports.deleteMovies = (req, res, next) => {
@@ -31,9 +31,9 @@ module.exports.deleteMovies = (req, res, next) => {
   Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError(movieNotFoundErr);
+        next(new NotFoundError(movieNotFoundErr));
       } else if (req.user.id !== String(movie.owner)) {
-        throw new ForbiddenError(permissionErr);
+        next(new ForbiddenError(permissionErr));
       }
       return movie;
     })
@@ -41,9 +41,9 @@ module.exports.deleteMovies = (req, res, next) => {
     .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new ValidationError(validationErr);
+        next(new ValidationError(validationErr));
+      } else {
+        next(err);
       }
-      next(err);
-    })
-    .catch(next);
+    });
 };
