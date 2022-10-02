@@ -8,17 +8,20 @@ const helmet = require('helmet');
 const { devDatabaseUrl } = require('./utils/constants');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const limiter = require('./middlewares/limiter');
+// const limiter = require('./middlewares/limiter');
+const cors = require('./middlewares/cors');
 
 const { NODE_ENV, MONGO_URL } = process.env;
 
 const app = express();
 app.use(requestLogger);
 app.use(helmet());
-app.use(limiter);
+// app.use(limiter);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors);
 
 mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : devDatabaseUrl, {
   useNewUrlParser: true,
