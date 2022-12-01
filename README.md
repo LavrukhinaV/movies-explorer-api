@@ -18,7 +18,7 @@ https://moviesexplorer.lavrukhina.nomoredomains.sbs
 https://github.com/LavrukhinaV/movies-explorer-frontend
 
 ### Стек:
-``Express.js` `Helmet` `express-rate-limit` `ESlint` `Joi` `celebrate` `MongoDB`
+`Express.js` `Helmet` `express-rate-limit` `ESlint` `Joi` `celebrate` `MongoDB`
 
 ### Запуск проекта:
 `npm i` — установка зависимостей;
